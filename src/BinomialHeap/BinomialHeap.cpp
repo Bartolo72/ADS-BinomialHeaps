@@ -1,9 +1,8 @@
 #include "BinomialHeap/BinomialHeap.h"
-#include <stdexcept>
-#include <iostream>
-#include <cassert>
 
-BinomialHeap::BinomialHeap() : head(nullptr), heap_size(0) {}
+BinomialHeap::BinomialHeap()
+    : head(nullptr), heap_size(0), link_count(0), swap_count(0),
+      extract_count(0), insert_count(0), decrease_prio_count(0) {}
 
 bool BinomialHeap::empty() const {
     return head == nullptr;
@@ -18,6 +17,7 @@ void BinomialHeap::insert(int key, double priority) {
     temp.head = new BinomialNode(key, priority);
     temp.node_map[key] = temp.head;
     temp.heap_size = 1;
+    ++insert_count;
     meld(temp);
 }
 
@@ -47,6 +47,7 @@ double BinomialHeap::prio(int key) const {
 
 void BinomialHeap::extract_min() {
     if (empty()) throw std::runtime_error("Heap is empty");
+    ++extract_count;
 
     BinomialNode* prev_min = nullptr;
     BinomialNode* min_node = head;
@@ -83,13 +84,13 @@ void BinomialHeap::extract_min() {
 
     BinomialHeap temp;
     temp.head = rev_child;
-    temp.heap_size = (1 << min_node->degree) - 1; // Approximate
+    temp.heap_size = (1 << min_node->degree) - 1;
 
     node_map.erase(min_node->key);
     delete min_node;
 
     meld(temp);
-    heap_size--;
+    --heap_size;
 }
 
 void BinomialHeap::decrease_prio(int key, double new_priority) {
@@ -100,6 +101,8 @@ void BinomialHeap::decrease_prio(int key, double new_priority) {
     if (new_priority > x->priority)
         throw std::invalid_argument("New priority is greater than current priority");
 
+    ++decrease_prio_count;
+
     x->priority = new_priority;
     BinomialNode* y = x;
     BinomialNode* z = y->parent;
@@ -107,6 +110,7 @@ void BinomialHeap::decrease_prio(int key, double new_priority) {
     while (z != nullptr && y->priority < z->priority) {
         std::swap(y->key, z->key);
         std::swap(y->priority, z->priority);
+        ++swap_count;
 
         node_map[y->key] = y;
         node_map[z->key] = z;
@@ -128,7 +132,6 @@ void BinomialHeap::meld(BinomialHeap& other) {
     other.node_map.clear();
 }
 
-// Internal helpers
 BinomialNode* BinomialHeap::merge_roots(BinomialNode* h1, BinomialNode* h2) {
     if (!h1) return h2;
     if (!h2) return h1;
@@ -152,6 +155,7 @@ BinomialNode* BinomialHeap::merge_roots(BinomialNode* h1, BinomialNode* h2) {
 }
 
 void BinomialHeap::link_trees(BinomialNode* y, BinomialNode* z) {
+    ++link_count;
     y->parent = z;
     y->sibling = z->child;
     z->child = y;
@@ -187,4 +191,8 @@ BinomialNode* BinomialHeap::union_heaps(BinomialNode* h1, BinomialNode* h2) {
     }
 
     return new_head;
+}
+
+bool BinomialHeap::contains(int x) const {
+    return node_map.find(x) != node_map.end();
 }
