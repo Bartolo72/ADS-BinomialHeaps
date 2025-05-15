@@ -1,56 +1,48 @@
 #ifndef BINOMIAL_HEAP_HPP
 #define BINOMIAL_HEAP_HPP
 
-#include <vector>
 #include <limits>
+#include <vector>
 #include <unordered_map>
 
-const double INFINITY_PRIO = std::numeric_limits<double>::max();
+const double INFINITY_WEIGHT = std::numeric_limits<double>::max();
+
+struct BinomialNode {
+    int key;           
+    double priority;  
+    int degree;
+    BinomialNode* parent;
+    BinomialNode* child;
+    BinomialNode* sibling;
+
+    BinomialNode(int k, double p)
+        : key(k), priority(p), degree(0), parent(nullptr), child(nullptr), sibling(nullptr) {}
+};
 
 class BinomialHeap {
 public:
     BinomialHeap();
 
-    void insert(int x, double p);
+    void insert(int key, double priority);
     int min_priority_elem() const;
-    double prio(int x) const;
+    double prio(int key) const;
     void extract_min();
-    void decrease_prio(int x, double p);
+    void decrease_prio(int key, double new_priority);
     void meld(BinomialHeap& other);
+
     bool empty() const;
     int size() const;
 
-    // Operation counters for empirical analysis
-    int get_link_count() const;
-    int get_swap_count() const;
-    int get_root_removal_count() const;
-
 private:
-    struct Node {
-        int key;
-        double priority;
-        int degree;
-        Node* parent;
-        Node* child;
-        Node* sibling;
-
-        Node(int k, double p) : key(k), priority(p), degree(0),
-                                parent(nullptr), child(nullptr), sibling(nullptr) {}
-    };
-
-    std::vector<Node*> roots; // forest of binomial trees
-    std::unordered_map<int, Node*> node_lookup;
-    Node* min_root;
+    BinomialNode* head;
     int heap_size;
 
-    // Operation counters
-    int link_count;
-    int swap_count;
-    int root_removal_count;
+    BinomialNode* merge_roots(BinomialNode* h1, BinomialNode* h2);
+    BinomialNode* union_heaps(BinomialNode* h1, BinomialNode* h2);
+    void link_trees(BinomialNode* y, BinomialNode* z);
+    BinomialNode* find_node(BinomialNode* node, int key) const;
 
-    void consolidate();
-    void link(Node* y, Node* z);
-    void delete_all(Node* n);
+    std::unordered_map<int, BinomialNode*> node_map;
 };
 
 #endif // BINOMIAL_HEAP_HPP
