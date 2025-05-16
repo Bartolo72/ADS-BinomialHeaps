@@ -52,7 +52,7 @@ void Experiments::run(int n, double c, int M, double max_weight) {
         int edge_count = GraphGenerator::generate(G, c, max_weight);
 
         if (!is_connected(G)) {
-            continue; // Skip disconnected graphs
+            continue; 
         }
 
         edge_counts.push_back(edge_count);
@@ -96,7 +96,6 @@ void Experiments::run(int n, double c, int M, double max_weight) {
         return *min_element(v.begin(), v.end());
     };
 
-    // Calculated metrics
     double time_avg = avg(times);
     double time_var = var(times, time_avg);
 
@@ -115,7 +114,6 @@ void Experiments::run(int n, double c, int M, double max_weight) {
     double decrease_avg = avg_int(decrease_counts);
     double decrease_var = var(vector<double>(decrease_counts.begin(), decrease_counts.end()), decrease_avg);
 
-    // Console output
     cout << "n = " << n << ", c = " << c << ", M = " << M << "\n";
     cout << "Average time: " << time_avg << " s\n";
     cout << "Average edges: " << edge_avg << "\n";
@@ -125,7 +123,6 @@ void Experiments::run(int n, double c, int M, double max_weight) {
     cout << "Average decrease-prio: " << decrease_avg << "\n";
     cout << "--------------------------------------------------\n";
 
-    // CSV output
     ofstream csv(outputFilename, ios::app);
     if (csv) {
         csv << n << "," << c << "," << M << ","

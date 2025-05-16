@@ -14,8 +14,7 @@ using WeightedGraph = std::vector<std::list<Edge>>;
 
 class GraphGenerator {
 public:
-    // Generates a random undirected weighted graph
     static int generate(WeightedGraph& G, int c, double max_weight);
 };
 
-#endif // GRAPH_GENERATOR_HPP
+#endif 

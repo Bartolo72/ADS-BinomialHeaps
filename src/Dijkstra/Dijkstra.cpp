@@ -21,7 +21,7 @@ void Dijkstra(const WeightedGraph &G, int s,
         int u = heap.min_priority_elem();
         heap.extract_min();
 
-        if (visited[u]) continue;  // Skip stale entries
+        if (visited[u]) continue; 
         visited[u] = true;
 
         double dist_u = D[u];

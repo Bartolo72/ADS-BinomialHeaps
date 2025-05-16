@@ -46,7 +46,7 @@ def plot_metric(metric, var_metric, ylabel, logscale=False):
             n_vals, theory_vals, linestyle="--", color="gray", label=f"Theory c={c_val}"
         )
 
-    plt.xlabel("n (number of nodes)")
+    plt.xlabel("n (number of vertices)")
     plt.ylabel(ylabel)
     plt.title(f"{ylabel} vs n")
     plt.legend()

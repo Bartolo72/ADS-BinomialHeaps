@@ -5,7 +5,7 @@
 #include <sstream>
 #include <string>
 
-// Ensure header and clear file if not empty
+
 void clearAndEnsureCsvHeader(const std::string& path) {
     std::ifstream file(path);
     bool notFileEmpty = file.peek() != std::ifstream::traits_type::eof();
@@ -31,7 +31,7 @@ void clearAndEnsureCsvHeader(const std::string& path) {
     }
 }
 
-// Templated vector parser for CLI args like n=500,1000
+
 template <typename T>
 void parseArgumentAsVector(const std::string& argument, std::vector<T>& values) {
     size_t pos = argument.find('=');
@@ -50,7 +50,7 @@ void parseArgumentAsVector(const std::string& argument, std::vector<T>& values) 
     }
 }
 
-// Templated scalar parser for int or double
+
 template <typename T>
 void parseArgument(const std::string& argument, T& value) {
     size_t pos = argument.find('=');
@@ -69,7 +69,6 @@ int main(int argc, char* argv[]) {
     std::vector<double> cs = {1.5, 1.75, 2.0};
     std::string outputFile = "output.csv";
 
-    // CLI parsing
     for (int i = 1; i < argc; ++i) {
         std::string arg = argv[i];
 

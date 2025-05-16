@@ -7,4 +7,4 @@
 
 void Dijkstra(const WeightedGraph& G, int source, std::vector<double>& D, std::vector<int>& path, BinomialHeap &heap);
 
-#endif // DIJKSTRA_HPP
+#endif

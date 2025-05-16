@@ -65,13 +65,11 @@ void BinomialHeap::extract_min() {
         curr = curr->sibling;
     }
 
-    // Remove min_node from root list
     if (prev_min != nullptr)
         prev_min->sibling = min_node->sibling;
     else
         head = min_node->sibling;
 
-    // Reverse child list
     BinomialNode* child = min_node->child;
     BinomialNode* rev_child = nullptr;
     while (child != nullptr) {

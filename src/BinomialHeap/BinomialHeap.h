@@ -35,7 +35,6 @@ public:
     void meld(BinomialHeap& other);
     bool contains(int key) const;
 
-    // Counters getters
     size_t get_link_count() const { return link_count; }
     size_t get_swap_count() const { return swap_count; }
     size_t get_extract_count() const { return extract_count; }
@@ -59,7 +58,6 @@ private:
     void link_trees(BinomialNode* y, BinomialNode* z);
     BinomialNode* union_heaps(BinomialNode* h1, BinomialNode* h2);
 
-    // Operation counters
     size_t link_count;
     size_t swap_count;
     size_t extract_count;
@@ -67,4 +65,4 @@ private:
     size_t decrease_prio_count;
 };
 
-#endif // BINOMIALHEAP_HPP
+#endif
