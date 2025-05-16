@@ -3,9 +3,10 @@
 #include <random>
 #include <chrono>
 
-void GraphGenerator::generate(WeightedGraph& G, int c, double max_weight) {
+int GraphGenerator::generate(WeightedGraph& G, int c, double max_weight) {
     int n = static_cast<int>(G.size());
     double p = c * std::log(n) / n;
+    int edge_count = 0;
 
     std::random_device rd;
     std::mt19937 gen(rd());
@@ -17,8 +18,11 @@ void GraphGenerator::generate(WeightedGraph& G, int c, double max_weight) {
             if (prob_dist(gen) < p) {
                 double weight = weight_dist(gen);
                 G[i].push_back({j, weight});
-                G[j].push_back({i, weight}); // Undirected edge
+                G[j].push_back({i, weight});
+                ++edge_count;
             }
         }
     }
+
+    return edge_count;
 }

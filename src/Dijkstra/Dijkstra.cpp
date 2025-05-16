@@ -16,15 +16,20 @@ void Dijkstra(const WeightedGraph &G, int s,
     path[s] = s;
     heap.insert(s, 0.0);
 
+    std::vector<bool> visited(n, false);
     while (!heap.empty()) {
         int u = heap.min_priority_elem();
-        double dist_u = heap.prio(u);
         heap.extract_min();
+
+        if (visited[u]) continue;  // Skip stale entries
+        visited[u] = true;
+
+        double dist_u = D[u];
 
         for (const auto &edge : G[u]) {
             int v = edge.target;
             double weight = edge.weight;
-            if (dist_u + weight < D[v]) {
+            if (!visited[v] && dist_u + weight < D[v]) {
                 D[v] = dist_u + weight;
                 path[v] = u;
                 if (heap.contains(v)) {
